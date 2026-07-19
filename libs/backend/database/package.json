@@ -1,0 +1,21 @@
+{
+  "name": "@erp/backend-database",
+  "private": true,
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prisma:generate": "prisma generate --schema=./prisma/schema",
+    "prisma:migrate": "prisma migrate dev --schema=./prisma/schema",
+    "prisma:studio": "prisma studio --schema=./prisma/schema"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.4.1",
+    "@prisma/client": "^5.19.1"
+  },
+  "devDependencies": {
+    "prisma": "^5.19.1",
+    "typescript": "^5.5.4"
+  }
+}

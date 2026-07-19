@@ -1,0 +1,39 @@
+{
+  "name": "gs-erp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Enterprise ERP for a China-Uzbekistan freight forwarding company. Phase 1: Enterprise WMS.",
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev:api": "pnpm --filter @erp/api dev",
+    "dev:admin": "pnpm --filter @erp/admin-web dev",
+    "dev:worker-pwa": "pnpm --filter @erp/worker-pwa dev",
+    "dev:customer-portal": "pnpm --filter @erp/customer-portal dev",
+    "build": "pnpm -r --if-present build",
+    "lint": "pnpm -r --if-present lint",
+    "test": "pnpm -r --if-present test",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "prisma:generate": "pnpm --filter @erp/backend-database run prisma:generate",
+    "prisma:migrate": "pnpm --filter @erp/backend-database run prisma:migrate",
+    "prisma:studio": "pnpm --filter @erp/backend-database run prisma:studio",
+    "docker:up": "docker compose -f infra/docker-compose.yml up -d",
+    "docker:down": "docker compose -f infra/docker-compose.yml down",
+    "docker:logs": "docker compose -f infra/docker-compose.yml logs -f",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "eslint": "^9.9.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "globals": "^15.9.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.3.0"
+  }
+}

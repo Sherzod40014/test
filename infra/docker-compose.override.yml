@@ -1,0 +1,12 @@
+# docker compose automatically merges this file with docker-compose.yml when both are present
+# in the same directory (no -f flags needed). This file is the place for local-machine-only
+# conveniences that shouldn't be part of the "core" infra definition -- e.g. a future staging
+# docker-compose.prod.yml would NOT include this file.
+
+services:
+  adminer:
+    image: adminer:latest
+    container_name: erp-adminer
+    restart: unless-stopped
+    ports:
+      - '8081:8080'

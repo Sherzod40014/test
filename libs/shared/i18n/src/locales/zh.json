@@ -1,0 +1,15 @@
+{
+  "app.title": "GS-ERP",
+  "nav.dashboard": "仪表盘",
+  "nav.warehouse": "仓库",
+  "nav.customers": "客户",
+  "common.login": "登录",
+  "common.logout": "退出登录",
+  "common.language": "语言",
+  "admin.placeholder": "管理后台即将上线",
+  "worker.placeholder": "仓库作业应用即将上线",
+  "worker.cameraCheck.button": "检查摄像头",
+  "worker.cameraCheck.granted": "摄像头权限已授予",
+  "worker.cameraCheck.denied": "摄像头权限被拒绝",
+  "portal.comingSoon": "客户门户即将上线"
+}

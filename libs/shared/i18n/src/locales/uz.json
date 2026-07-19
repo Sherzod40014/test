@@ -1,0 +1,15 @@
+{
+  "app.title": "GS-ERP",
+  "nav.dashboard": "Boshqaruv paneli",
+  "nav.warehouse": "Ombor",
+  "nav.customers": "Mijozlar",
+  "common.login": "Kirish",
+  "common.logout": "Chiqish",
+  "common.language": "Til",
+  "admin.placeholder": "Administrator paneli tez orada",
+  "worker.placeholder": "Ombor xodimi ilovasi tez orada",
+  "worker.cameraCheck.button": "Kamerani tekshirish",
+  "worker.cameraCheck.granted": "Kameraga ruxsat berildi",
+  "worker.cameraCheck.denied": "Kameraga ruxsat berilmadi",
+  "portal.comingSoon": "Mijozlar portali tez orada"
+}

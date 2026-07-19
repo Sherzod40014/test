@@ -1,0 +1,13 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Per-module .prisma files (e.g. iam.prisma, master-data.prisma) will be added to this same
+// "prisma/schema" folder starting in Milestone M1 -- that's why the prismaSchemaFolder preview
+// feature is enabled below ahead of time.
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["prismaSchemaFolder"]
+  output          = "../generated/client"
+}

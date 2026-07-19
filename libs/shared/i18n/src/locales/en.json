@@ -1,0 +1,15 @@
+{
+  "app.title": "GS-ERP",
+  "nav.dashboard": "Dashboard",
+  "nav.warehouse": "Warehouse",
+  "nav.customers": "Customers",
+  "common.login": "Log in",
+  "common.logout": "Log out",
+  "common.language": "Language",
+  "admin.placeholder": "Admin console coming soon",
+  "worker.placeholder": "Worker app coming soon",
+  "worker.cameraCheck.button": "Check camera",
+  "worker.cameraCheck.granted": "Camera access granted",
+  "worker.cameraCheck.denied": "Camera access denied",
+  "portal.comingSoon": "Customer portal coming soon"
+}

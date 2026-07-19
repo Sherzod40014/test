@@ -1,0 +1,15 @@
+{
+  "app.title": "GS-ERP",
+  "nav.dashboard": "Панель управления",
+  "nav.warehouse": "Склад",
+  "nav.customers": "Клиенты",
+  "common.login": "Войти",
+  "common.logout": "Выйти",
+  "common.language": "Язык",
+  "admin.placeholder": "Панель администратора скоро появится",
+  "worker.placeholder": "Приложение для сотрудников склада скоро появится",
+  "worker.cameraCheck.button": "Проверить камеру",
+  "worker.cameraCheck.granted": "Доступ к камере разрешён",
+  "worker.cameraCheck.denied": "Доступ к камере запрещён",
+  "portal.comingSoon": "Портал клиента скоро появится"
+}
