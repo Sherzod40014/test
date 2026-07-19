@@ -1,0 +1,84 @@
+// Identity, access, and authentication. RoleName is a fixed enum for M1 -- a fully dynamic
+// role/permission matrix is future scope, not needed for the roles this business actually has
+// today (see docs/adr/0002-orm-choice.md for why we favor concrete, boring models over
+// speculative generality this early).
+
+enum RoleName {
+  SUPER_ADMIN
+  COMPANY_ADMIN
+  LOGISTICS_MANAGER
+  WAREHOUSE_OPERATOR
+  CUSTOMER
+}
+
+model User {
+  id           String    @id @default(cuid())
+  companyId    String
+  company      Company   @relation(fields: [companyId], references: [id])
+  email        String
+  passwordHash String
+  fullName     String
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+
+  roles           UserRole[]
+  warehouseAccess UserWarehouseAccess[]
+  refreshTokens   RefreshToken[]
+
+  @@unique([companyId, email])
+  @@map("users")
+}
+
+model Role {
+  id          String     @id @default(cuid())
+  name        RoleName   @unique
+  description String?
+
+  users UserRole[]
+
+  @@map("roles")
+}
+
+model UserRole {
+  userId String
+  roleId String
+  user   User @relation(fields: [userId], references: [id])
+  role   Role @relation(fields: [roleId], references: [id])
+
+  @@id([userId, roleId])
+  @@map("user_roles")
+}
+
+// A user's grant to operate against one specific warehouse's data. Absence of a row means no
+// access. LOGISTICS_MANAGER and above may be given rows for every warehouse in their company (or
+// bypass this check entirely via role -- see WarehouseAccessGuard), but WAREHOUSE_OPERATOR must
+// have an explicit row per warehouse they're allowed to touch.
+model UserWarehouseAccess {
+  id          String    @id @default(cuid())
+  userId      String
+  warehouseId String
+  user        User      @relation(fields: [userId], references: [id])
+  warehouse   Warehouse @relation(fields: [warehouseId], references: [id])
+  createdAt   DateTime  @default(now())
+
+  @@unique([userId, warehouseId])
+  @@map("user_warehouse_access")
+}
+
+// Refresh tokens are stored hashed (never plaintext) so a leaked database dump alone can't be
+// replayed as a live session. The access token itself is a short-lived stateless JWT and is never
+// persisted here.
+model RefreshToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}

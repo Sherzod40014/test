@@ -1,0 +1,96 @@
+// Master data: the legal entity (Company), its Warehouses, and its Customers (each with a
+// permanent, never-reused GS Code). See docs/adr/0004-gs-code-sequence.md for why GS Code
+// generation uses a dedicated per-company sequence row instead of relying on row count or a
+// database SEQUENCE object.
+
+enum WarehouseCode {
+  GUANGZHOU
+  YIWU
+  URUMQI
+  KASHGAR
+  ANDIJAN
+  TASHKENT
+}
+
+enum WarehouseCountry {
+  CN
+  UZ
+}
+
+enum Currency {
+  USD
+  CNY
+  UZS
+}
+
+model Company {
+  id        String    @id @default(cuid())
+  name      String
+  legalName String?
+  timezone  String    @default("Asia/Tashkent")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  warehouses        Warehouse[]
+  customers         Customer[]
+  users             User[]
+  customerSequence  CustomerSequence?
+
+  @@map("companies")
+}
+
+model Warehouse {
+  id        String           @id @default(cuid())
+  companyId String
+  company   Company          @relation(fields: [companyId], references: [id])
+  code      WarehouseCode
+  name      String
+  country   WarehouseCountry
+  timezone  String
+  isActive  Boolean          @default(true)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  deletedAt DateTime?
+
+  userAccess UserWarehouseAccess[]
+
+  @@unique([companyId, code])
+  @@map("warehouses")
+}
+
+// One row per Company, incremented atomically inside a transaction to hand out the next GS Code
+// (GS001, GS002, ...). Never decremented, never reused, even if a Customer row is later
+// soft-deleted -- the sequence value, not the Customer row, is the source of truth for
+// "next GS code", so a deleted customer's code can never be re-issued to someone else.
+model CustomerSequence {
+  id            String @id @default(cuid())
+  companyId     String @unique
+  company       Company @relation(fields: [companyId], references: [id])
+  lastSequence  Int     @default(0)
+
+  @@map("customer_sequences")
+}
+
+model Customer {
+  id            String    @id @default(cuid())
+  companyId     String
+  company       Company   @relation(fields: [companyId], references: [id])
+  // Unique per company, NOT globally -- the sequence restarts at GS001 for every company (see
+  // docs/adr/0004-gs-code-sequence.md), so two different companies' customers legitimately share
+  // the literal string "GS001". A bare `@unique` here would make the second company's first
+  // customer creation fail with a constraint violation.
+  gsCode        String
+  gsSequence    Int
+  name          String
+  phone         String?
+  contactPerson String?
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  @@unique([companyId, gsCode])
+  @@index([companyId])
+  @@map("customers")
+}

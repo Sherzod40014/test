@@ -19,6 +19,8 @@
       "@erp/shared-ui-kit/*": ["libs/shared/ui-kit/src/*"],
       "@erp/shared-utils": ["libs/shared/utils/src/index.ts"],
       "@erp/shared-utils/*": ["libs/shared/utils/src/*"],
+      "@erp/shared-api-client": ["libs/shared/api-client/src/index.ts"],
+      "@erp/shared-api-client/*": ["libs/shared/api-client/src/*"],
       "@erp/shared-config": ["libs/shared/config/src/index.ts"],
       "@erp/shared-config/*": ["libs/shared/config/src/*"],
       "@erp/backend-database": ["libs/backend/database/src/index.ts"],

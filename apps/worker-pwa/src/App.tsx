@@ -1,9 +1,17 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '@erp/shared-ui-kit';
+import { isAuthenticated } from '@erp/shared-api-client';
 import { CameraCheck } from './components/CameraCheck';
+import { LoginPage } from './pages/LoginPage';
 
 function App() {
   const { t } = useTranslation();
+  const [authenticated, setAuthenticated] = useState(() => isAuthenticated());
+
+  if (!authenticated) {
+    return <LoginPage onLoggedIn={() => setAuthenticated(true)} />;
+  }
 
   return (
     <div

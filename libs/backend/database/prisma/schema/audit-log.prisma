@@ -1,0 +1,20 @@
+// Generic, cross-cutting audit trail. Populated by the audit-log Prisma Client Extension
+// (see prisma.service.ts) inside the same transaction as the write it's recording, so an
+// AuditEntry can never exist without the change it describes actually having happened, or vice
+// versa. companyId/actorUserId are nullable because some writes happen outside a request context
+// (e.g. the seed script) or before a user is authenticated (e.g. the signup of the very first
+// user in a new company).
+model AuditEntry {
+  id            String   @id @default(cuid())
+  companyId     String?
+  actorUserId   String?
+  entityType    String
+  entityId      String
+  action        String
+  changedFields Json?
+  createdAt     DateTime @default(now())
+
+  @@index([companyId, entityType, entityId])
+  @@index([createdAt])
+  @@map("audit_entries")
+}

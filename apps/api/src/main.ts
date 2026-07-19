@@ -21,6 +21,7 @@ async function bootstrap(): Promise<void> {
     .setTitle('GS-ERP API')
     .setDescription('GS-ERP backend API -- Enterprise WMS Phase 1 for China<->Uzbekistan freight forwarding')
     .setVersion('0.1')
+    .addBearerAuth()
     .build();
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api/docs', app, swaggerDocument);

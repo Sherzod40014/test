@@ -12,12 +12,17 @@ RUN corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/api/package.json ./apps/api/package.json
 COPY libs/backend/database/package.json ./libs/backend/database/package.json
+COPY libs/shared/dto/package.json ./libs/shared/dto/package.json
+COPY libs/shared/utils/package.json ./libs/shared/utils/package.json
 
 RUN pnpm install --frozen-lockfile
 
 # ---- Stage 2: build -------------------------------------------------------
-# Copies full source and compiles the database lib first (apps/api depends
-# on its build output via workspace linkage), then compiles the API itself.
+# Copies full source and compiles apps/api's workspace dependencies first
+# (it depends on their build output via workspace linkage), then compiles
+# the API itself. pnpm --filter ...^build (with the "^" for build-only
+# ancestors) would also work, but listing them explicitly keeps this
+# Dockerfile readable as the dependency set grows.
 FROM node:20-alpine AS build
 WORKDIR /workspace
 RUN corepack enable
@@ -27,6 +32,8 @@ COPY --from=deps /workspace/apps/api/node_modules ./apps/api/node_modules
 COPY . .
 
 RUN pnpm --filter @erp/backend-database build
+RUN pnpm --filter @erp/shared-dto build
+RUN pnpm --filter @erp/shared-utils build
 RUN pnpm --filter @erp/api build
 
 # ---- Stage 3: runtime -------------------------------------------------------
